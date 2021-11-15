@@ -7,4 +7,7 @@ export default defineConfig({
     server: {
         port: 9999,
     },
+    build: {
+        outDir: "./src/frontend"
+    }
 })

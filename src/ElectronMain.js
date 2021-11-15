@@ -12,7 +12,7 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: pDisplay.size.width,
         height: pDisplay.size.height,
-        type: 'desktop',
+        // type: 'desktop',
         frame: false,
         transparent: true,
         focusable: false,
@@ -24,7 +24,9 @@ function createWindow() {
     })
 
     mainWindow.setIgnoreMouseEvents(true)
-    mainWindow.loadURL('http://localhost:9999/index.html')
+    mainWindow.loadURL(ElectronUtility.isDevelopmentMode() ? 
+        'http://localhost:3000/index.html': 
+        'http://localhost:9999/index.html')
     // mainWindow.webContents.openDevTools()
 }
 
@@ -52,13 +54,14 @@ function sendMessage(channel, data = null) {
 function startWebServer(port, rootDir) {
     webServer.use(express.static(rootDir))
     webServer.listen(port, () => {
-        console.log('Start WebServer...')
+        console.log('Start WebServer... ' + rootDir)
     })
 }
 
 async function main() {
     if (!ElectronUtility.isDevelopmentMode()) {
-        startWebServer(9999, path.resolve(__dirname, '../', 'dist'))
+        const webServerDir = path.resolve(__dirname, 'frontend')
+        startWebServer(9999, webServerDir)
     }
 
     await app.whenReady()
@@ -85,7 +88,7 @@ ipcMain.on('requestOsInfo', () => {
     const mb = 1024 * 1024
     const totalMemory = os.totalmem() / mb
     const freeMemory = os.freemem() / mb
-    const memory = `${totalMemory} MB`
+    const memory = `${Math.round(totalMemory)} MB`
 
     sendMessage('osInfo', {
         arch: arch,

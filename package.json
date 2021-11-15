@@ -10,13 +10,17 @@
         "electron:dev": "electron . --dev"
     },
     "dependencies": {
-        "vue": "^3.2.16"
+        "vue": "^3.2.16",
+        "express": "^4.17.1"
     },
     "devDependencies": {
         "@vitejs/plugin-vue": "^1.9.3",
         "electron": "^15.3.1",
-        "express": "^4.17.1",
+        "electron-builder": "^22.13.1",
         "sass": "^1.43.4",
         "vite": "^2.6.4"
-    }
+    },
+    "files": [
+        "dist/"
+    ]
 }
